@@ -20,6 +20,10 @@ export const ChatHistory = () => {
     window.addEventListener('chat-created', (event) => {
       const chat: Chat = (event as CustomEvent).detail
       setChats([...chats, chat])
+    })
+
+    window.addEventListener('chat-classified', (event) => {
+      const chat: Chat = (event as CustomEvent).detail
       setLatestChat(chat)
     })
   }, [chats])
@@ -57,8 +61,6 @@ export const ChatHistory = () => {
 
             <ul>
               {chats.map(({ id, title }) => {
-                const isLatest = latestChat?.id === id
-
                 return (
                   <li className='w-full' key={id}>
                     <Link
@@ -67,7 +69,7 @@ export const ChatHistory = () => {
                       to={`/chat/${id}`}
                       className='w-[185px] text-neutral-300 truncate text-sm rounded-md border border-black hover:bg-zinc-900 hover:border hover:border-white/10 px-2.5 py-2 block'
                     >
-                      {!isLatest ? title : null}
+                      {title}
                     </Link>
                   </li>
                 )

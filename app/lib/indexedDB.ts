@@ -31,12 +31,8 @@ const openDB = async (): Promise<IDBDatabase> => {
         }
       }
 
-      connection.onsuccess = () => {
-        resolve(connection.result)
-      }
-      connection.onerror = () => {
-        reject(connection.error)
-      }
+      connection.onsuccess = () => resolve(connection.result)
+      connection.onerror = () => reject(connection.error)
     }
   })
 }
@@ -56,6 +52,7 @@ const createChat = async (chat: Chat) => {
     }
     req.onsuccess = () => {
       console.log('Chat created successfully!')
+      window.dispatchEvent(new CustomEvent('chat-created', { detail: chat }))
     }
   }
 }
@@ -124,10 +121,7 @@ export const updateChatTitle = async (id: string, title: string) => {
 
       os.put(chat)
       console.log('Chat title updated successfully!')
-      //even though this isn't techincally creating a new chat,
-      //we don't want to dispatch the new chat until after it's been
-      //classified and a title has been set.
-      window.dispatchEvent(new CustomEvent('chat-created', { detail: chat }))
+      window.dispatchEvent(new CustomEvent('chat-classified', { detail: chat }))
     }
   }
 }
