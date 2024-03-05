@@ -29,7 +29,7 @@ export const ChatHistory = () => {
 
       {Object.entries(groupedChats).map(([day, chats]) => {
         return (
-          <div key={day} className='ml-5'>
+          <div key={day} className='ml-5 mb-5'>
             <span className='text-xs text-neutral-500 mb-1 ml-2.5'>{day}</span>
 
             <ul>
