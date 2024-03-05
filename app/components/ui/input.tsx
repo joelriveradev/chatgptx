@@ -1,21 +1,49 @@
-import * as React from 'react'
-
+import { ChangeEvent, forwardRef, useState } from 'react'
 import { cn } from '~/utils'
+import { Button } from '~/components/ui/button'
+import { ArrowUp, Paperclip } from 'lucide-react'
+import { useAtomValue } from 'jotai'
+import { initialModel } from '~/store'
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
+    const model = useAtomValue(initialModel)
+    const isGPT4 = model.value === 'gpt-4'
+
     return (
-      <input
-        type={type}
-        className={cn(
-          'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-          className
+      <div className='flex items-center justify-between border border-white/15 hover:border-white/25 rounded-2xl px-3 group transition-all'>
+        {isGPT4 && (
+          <Button variant='ghost' className='w-8 h-8'>
+            <Paperclip size={20} className='shrink-0 -rotate-45' />
+          </Button>
         )}
-        ref={ref}
-        {...props}
-      />
+
+        <input
+          ref={ref}
+          onChange={props.onChange}
+          type={type}
+          className={cn(
+            'flex max-h-25 p-4 w-full bg-transparent text-base file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+            className,
+            {
+              'pl-1': !isGPT4,
+              'pl-2': isGPT4
+            }
+          )}
+          {...props}
+        />
+
+        <Button
+          type='submit'
+          variant='secondary'
+          className='w-8 h-8 cursor-pointer disabled:cursor-not-allowed disabled:bg-white/15 text-black bg-white hover:bg-white'
+          disabled={props.value === ''}
+        >
+          <ArrowUp size={20} className='shrink-0' />
+        </Button>
+      </div>
     )
   }
 )
