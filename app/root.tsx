@@ -48,8 +48,8 @@ export default function App() {
             <div className='w-full'>
               <header className='flex items-center justify-between p-2 border-b border-b-white/15'>
                 <Sheet>
-                  <SheetTrigger>
-                    <Button className='md:hidden' variant='ghost'>
+                  <SheetTrigger className='md:hidden'>
+                    <Button variant='ghost'>
                       <Menu size={20} />
                     </Button>
                   </SheetTrigger>
