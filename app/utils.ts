@@ -42,3 +42,10 @@ export function isElementAtBottom(element: HTMLElement): boolean {
   const offsetHeight = element.offsetHeight
   return element.scrollTop === scrollHeight - offsetHeight
 }
+
+export async function typewriter(text: string, element: HTMLElement, speed = 50) {
+  for (let i = 0; i < text.length; i++) {
+    element.innerHTML += text.charAt(i)
+    await new Promise((resolve) => setTimeout(resolve, speed))
+  }
+}
