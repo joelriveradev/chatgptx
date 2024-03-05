@@ -141,6 +141,7 @@ export const storeMessages = async (id: string, messages: Messages) => {
       req.onsuccess = () => resolve(req.result)
     })
 
+    //optimistically creates a new chat if it doesn't exist
     if (!chat) {
       return await createChat({
         id,
