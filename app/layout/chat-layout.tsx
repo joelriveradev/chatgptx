@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect, useMemo, useState, useCallback } from 'react'
-import { type ChatCompletion } from 'openai/resources/index.mjs'
+import { Chat, type ChatCompletion } from 'openai/resources/index.mjs'
 import { type Message } from 'ai'
+import { type ChatSuggestion } from '~/types'
 
 import { useChat } from 'ai/react'
 import { cn, generateUniqueId, isElementAtBottom } from '~/utils'
@@ -9,6 +10,7 @@ import { useAtom } from 'jotai'
 import { ArrowDown } from 'lucide-react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { ChatSuggestions } from '~/components/custom/chat-suggestions'
 import { storeMessages, updateChatTitle } from '~/lib/indexedDB'
 import { Messages } from '~/types'
 import { initialModel } from '~/store'
@@ -32,11 +34,13 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
   const chatID = id || useMemo(() => generateUniqueId(), [])
   const navigate = useNavigate()
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    id: chatID,
-    initialMessages: history,
-    body: { model: model.value }
-  })
+  const { messages, input, handleInputChange, handleSubmit, append, isLoading } = useChat(
+    {
+      id: chatID,
+      initialMessages: history,
+      body: { model: model.value }
+    }
+  )
 
   const scrollToBottom = useCallback(() => {
     const container = document.getElementById('messages')
@@ -56,6 +60,14 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
       }
     }
     return false
+  }, [])
+
+  const handleSuggestionClick = useCallback((suggestion: ChatSuggestion) => {
+    append({
+      id: chatID,
+      role: 'user',
+      content: `${suggestion.title} ${suggestion.description}`
+    })
   }, [])
 
   const runEffect = async () => {
@@ -155,6 +167,12 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
         ) : null}
 
         <Form method='POST' onSubmit={handleSubmit}>
+          <div className='mb-2'>
+            {messages.length === 0 && history.length === 0 && (
+              <ChatSuggestions onSuggestionClick={handleSuggestionClick} />
+            )}
+          </div>
+
           <Input
             type='text'
             placeholder='Message ChatGPT...'

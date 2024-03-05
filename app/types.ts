@@ -17,3 +17,8 @@ export interface ModelOption {
   description: string
   icon: LucideIcon
 }
+
+export interface ChatSuggestion {
+  title: string
+  description: string
+}
