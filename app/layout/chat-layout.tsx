@@ -21,7 +21,7 @@ interface State {
 interface Props {
   id?: string
   children?: ReactNode | ((state: State) => ReactNode)
-  history: Messages
+  history?: Messages
 }
 
 export default function ChatLayout({ id, children, history = [] }: Props) {
