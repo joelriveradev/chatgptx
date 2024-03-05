@@ -3,8 +3,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { Chat } from '~/types'
 import { getChats } from '~/lib/indexedDB'
 import { groupChatsByDay } from '~/utils'
-import { isMenuOpen } from '~/store'
-import { useAtom } from 'jotai'
 
 export const ChatHistory = () => {
   //if this were a server component
