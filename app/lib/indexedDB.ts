@@ -124,6 +124,10 @@ export const updateChatTitle = async (id: string, title: string) => {
 
       os.put(chat)
       console.log('Chat title updated successfully!')
+      //even though this isn't techincally creating a new chat,
+      //we don't want to dispatch the new chat until after it's been
+      //classified and a title has been set.
+      window.dispatchEvent(new CustomEvent('chat-created', { detail: chat }))
     }
   }
 }
