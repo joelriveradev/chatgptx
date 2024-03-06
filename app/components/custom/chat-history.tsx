@@ -1,16 +1,13 @@
 import { Link } from '@remix-run/react'
-import { useEffect, useMemo, useState, useRef } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Chat } from '~/types'
 import { getChats } from '~/lib/indexedDB'
 import { groupChatsByDay, typewriter } from '~/utils'
 
 export const ChatHistory = () => {
-  //if this were a server component
-  //I wouldn't need to do this
   const [chats, setChats] = useState<Chat[]>([])
   const [latestChat, setLatestChat] = useState<Chat | null>(null)
 
-  //and I wouldn't need to do this
   useEffect(() => {
     getChats().then(setChats)
   }, [])
@@ -21,7 +18,7 @@ export const ChatHistory = () => {
       const chat: Chat = (event as CustomEvent).detail
       setChats([...chats, chat])
     })
-
+    //listen for custom chat-classified events
     window.addEventListener('chat-classified', (event) => {
       const chat: Chat = (event as CustomEvent).detail
       setLatestChat(chat)
@@ -67,7 +64,7 @@ export const ChatHistory = () => {
                       id={id}
                       key={id}
                       to={`/chat/${id}`}
-                      className='w-[185px] text-neutral-300 truncate text-sm rounded-md border border-black hover:bg-zinc-900 hover:border hover:border-white/10 px-2.5 py-2 block'
+                      className='w-[185px] text-neutral-300 truncate text-sm rounded-md border border-transparent hover:bg-zinc-900 hover:border hover:border-white/10 px-2.5 py-2 block'
                     >
                       {title}
                     </Link>
