@@ -32,11 +32,12 @@ export const ChatSuggestions = ({ onSuggestionClick }: Props) => {
     if (suggestions) {
       animate(
         suggestions,
-        { y: -10 },
-        { delay: stagger(0.08), duration: 0.5, easing: spring() }
+        { y: -18 },
+        { delay: stagger(0.1), duration: 0.5, easing: spring() }
       )
     }
   }, [])
+
   return (
     <ul className='grid w-full grid-flow-row grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-3'>
       {suggestions.map((suggestion, i) => {
@@ -48,7 +49,10 @@ export const ChatSuggestions = ({ onSuggestionClick }: Props) => {
             key={`${title}-${i}`}
             onClick={() => onSuggestionClick(suggestion)}
           >
-            <button className='flex flex-col justify-start w-full text-left h-full bg-transparent border border-zinc-800 rounded-xl p-4 hover:bg-zinc-900 cursor-pointer'>
+            <button
+              type='button'
+              className='flex flex-col justify-start w-full text-left h-full bg-transparent border border-zinc-800 rounded-xl p-4 hover:bg-zinc-900 cursor-pointer'
+            >
               <p className='font-semibold text-white antialiased text-sm mb-1'>{title}</p>
               <p className='text-zinc-600 text-sm'>{description}</p>
             </button>
