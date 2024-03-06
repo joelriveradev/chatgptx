@@ -10,6 +10,7 @@ import { useAtom } from 'jotai'
 import { ArrowDown } from 'lucide-react'
 import { Input } from '~/components/ui/input'
 import { Button } from '~/components/ui/button'
+import { Show } from '~/components/custom/show'
 import { ChatSuggestions } from '~/components/custom/chat-suggestions'
 import { storeMessages, updateChatTitle } from '~/lib/indexedDB'
 import { Messages } from '~/types'
@@ -43,11 +44,10 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
   )
 
   const scrollToBottom = useCallback(() => {
-    const container = document.getElementById('messages')
+    const anchorEl = document.getElementById('anchor')
 
-    if (container) {
-      const lastChild = container.lastElementChild
-      lastChild?.scrollIntoView({ behavior: 'smooth' })
+    if (anchorEl) {
+      anchorEl.scrollIntoView({ behavior: 'smooth' })
     }
   }, [])
 
@@ -143,20 +143,22 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
                   <strong>{isChatGPT ? 'ChatGPT' : 'You'}</strong>
                 </div>
 
-                {role !== 'data' &&
-                  chunkContent(content).map((chunk, i) => {
+                <Show when={role !== 'data'}>
+                  {chunkContent(content).map((chunk, i) => {
                     return (
                       <p key={i} className='antialiased ml-6 mb-4 last:mb-0'>
                         {chunk}
                       </p>
                     )
                   })}
+                </Show>
               </div>
             )
           })}
+          <div id='anchor' />
         </div>
 
-        {messages.length > 0 && !bottom ? (
+        <Show when={messages.length > 0 && !bottom && !isLoading}>
           <Button
             className='w-8 h-8 p-0 flex items-center justify-center bg-zinc-900 border border-zinc-700 rounded-full hover:bg-zinc-800 hover:scale-125 transition-all absolute bottom-28 left-0 right-0 m-auto'
             variant='default'
@@ -164,13 +166,13 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
           >
             <ArrowDown size={15} className='text-white shrink-0' />
           </Button>
-        ) : null}
+        </Show>
 
         <Form method='POST' onSubmit={handleSubmit}>
           <div className='mb-2'>
-            {messages.length === 0 && history.length === 0 && (
+            <Show when={messages.length === 0 && history.length === 0}>
               <ChatSuggestions onSuggestionClick={handleSuggestionClick} />
-            )}
+            </Show>
           </div>
 
           <Input
