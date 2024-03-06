@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useMemo, useState, useCallback } from 'react'
-import { Chat, type ChatCompletion } from 'openai/resources/index.mjs'
+import { type ChatCompletion } from 'openai/resources/index.mjs'
 import { type Message } from 'ai'
 import { type ChatSuggestion } from '~/types'
 
@@ -70,9 +70,7 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
     })
   }, [])
 
-  const runEffect = async () => {
-    scrollToBottom()
-
+  const runEffectAsync = async () => {
     if (!isLoading) {
       if (messages.length === 2 && !id) {
         //we can use the first message to classify the chat subject
@@ -104,10 +102,12 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
   }
 
   useEffect(() => {
+    scrollToBottom()
+
     if (messages.length > 0) {
-      runEffect()
+      runEffectAsync()
     }
-  }, [messages.length, isLoading])
+  }, [messages, isLoading])
 
   const chunkContent = useMemo(() => {
     return (text: string) => text.split('\n\n')
