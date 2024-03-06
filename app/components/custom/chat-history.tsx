@@ -51,7 +51,7 @@ export const ChatHistory = () => {
   return (
     <div className='flex flex-col items-start w-full h-full overflow-y-scroll overflow-x-hidden pt-6'>
       {chats.length < 1 && (
-        <p className='text-neutral-500 text-xs'>Chats will show up here.</p>
+        <p className='text-neutral-500 text-xs ml-7'>Chats will show up here.</p>
       )}
 
       {Object.entries(groupedChats).map(([day, chats]) => {
