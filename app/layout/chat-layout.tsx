@@ -128,8 +128,9 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
           id='messages'
           onScroll={() => setBottom(isBottom())}
         >
-          {messages.map(({ id, content, role }) => {
+          {messages.map(({ id, content, role }, i) => {
             const isChatGPT = role === 'assistant'
+            const isStreaming = isLoading && i === messages.length - 1
 
             return (
               <div key={id} className='mb-8'>
@@ -145,8 +146,18 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
 
                 <Show when={role !== 'data'}>
                   {chunkContent(content).map((chunk, i) => {
+                    //only add the text cursor to the last streaming chunk
+                    const lastChunk = i === chunkContent(content).length - 1
+
                     return (
-                      <p key={i} className='antialiased ml-6 mb-4 last:mb-0'>
+                      <p
+                        key={i}
+                        className={cn('antialiased ml-6 mb-4 last:mb-0', {
+                          relative: isStreaming && lastChunk,
+                          'after:w-4 after:h-4 after:rounded-full after:absolute after:bottom-1 after:ml-1 after:bg-white':
+                            isStreaming && lastChunk
+                        })}
+                      >
                         {chunk}
                       </p>
                     )
