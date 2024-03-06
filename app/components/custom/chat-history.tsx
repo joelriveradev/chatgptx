@@ -1,16 +1,15 @@
 import { Link } from '@remix-run/react'
 import { useEffect, useMemo, useState } from 'react'
 import { Chat } from '~/types'
-import { getChats } from '~/lib/indexedDB'
 import { groupChatsByDay, typewriter } from '~/utils'
 
-export const ChatHistory = () => {
-  const [chats, setChats] = useState<Chat[]>([])
-  const [latestChat, setLatestChat] = useState<Chat | null>(null)
+interface Props {
+  history: Chat[]
+}
 
-  useEffect(() => {
-    getChats().then(setChats)
-  }, [])
+export const ChatHistory = ({ history }: Props) => {
+  const [chats, setChats] = useState<Chat[]>(history)
+  const [latestChat, setLatestChat] = useState<Chat | null>(null)
 
   useEffect(() => {
     //listen for custom chat-created events

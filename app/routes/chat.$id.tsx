@@ -1,28 +1,31 @@
-import { useEffect, useState, useTransition } from 'react'
 import { getMessages } from '~/lib/indexedDB'
-import { useParams } from '@remix-run/react'
-import { Messages } from '~/types'
+import { MetaFunction, ClientLoaderFunctionArgs, useLoaderData } from '@remix-run/react'
 
 import ChatLayout from '~/layout/chat-layout'
 
-export default function ChatPage() {
-  const [messages, setMessages] = useState<Messages>([])
-  const [_, startTransition] = useTransition()
-  const { id } = useParams()
+export const meta: MetaFunction = () => {
+  return [{ title: 'ChatGPT Clone' }]
+}
 
-  useEffect(() => {
-    if (id) {
-      getMessages(id).then((messages) => {
-        startTransition(() => {
-          setMessages(messages)
-        })
-      })
+export async function clientLoader({ params }: ClientLoaderFunctionArgs) {
+  const { id } = params
+
+  if (id) {
+    return {
+      id,
+      messages: await getMessages(id)
     }
-  }, [id])
+  }
+}
+
+clientLoader.hydrate = true
+
+export default function ChatPage() {
+  const data = useLoaderData<typeof clientLoader>()
 
   return (
     <main>
-      <ChatLayout id={id} history={messages} />
+      <ChatLayout id={data?.id} history={data?.messages} />
     </main>
   )
 }

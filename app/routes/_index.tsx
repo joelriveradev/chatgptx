@@ -5,7 +5,7 @@ import ChatLayout from '~/layout/chat-layout'
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'cchat' },
+    { title: 'ChatGPT Clone' },
     {
       name: 'description',
       content:

@@ -9,7 +9,9 @@ import {
   ScrollRestoration,
   useRouteError,
   isRouteErrorResponse,
-  Link
+  Link,
+  ClientLoaderFunctionArgs,
+  useLoaderData
 } from '@remix-run/react'
 
 import { Provider } from 'jotai'
@@ -19,6 +21,7 @@ import { SidebarHeader } from '~/components/custom/sidebar-header'
 import { Button } from '~/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet'
 import { ChatHistory } from '~/components/custom/chat-history'
+import { getChats } from '~/lib/indexedDB'
 
 import stylesheet from '~/tailwind.css'
 
@@ -27,7 +30,15 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet }
 ]
 
+export async function clientLoader({}: ClientLoaderFunctionArgs) {
+  return { chatHistory: await getChats() }
+}
+
+clientLoader.hydrate = true
+
 export default function App() {
+  const { chatHistory } = useLoaderData<typeof clientLoader>()
+
   return (
     <html lang='en'>
       <head>
@@ -42,7 +53,7 @@ export default function App() {
           <div className='flex items-center'>
             <aside className='w-[260px] h-screen hidden md:flex md:flex-col bg-black/80 border-r border-white/15'>
               <SidebarHeader />
-              <ChatHistory />
+              <ChatHistory history={chatHistory} />
             </aside>
 
             <div className='w-full'>
@@ -54,7 +65,7 @@ export default function App() {
 
                   <SheetContent side='left' className='w-[260px]'>
                     <SidebarHeader />
-                    <ChatHistory />
+                    <ChatHistory history={chatHistory} />
                   </SheetContent>
                 </Sheet>
 
