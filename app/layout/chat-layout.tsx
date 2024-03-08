@@ -1,4 +1,12 @@
-import { type ReactNode, useEffect, useMemo, useState, useCallback } from 'react'
+import {
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+  useTransition
+} from 'react'
+
 import { type ChatCompletion } from 'openai/resources/index.mjs'
 import { type Message } from 'ai'
 import { type ChatSuggestion } from '~/types'
@@ -29,6 +37,7 @@ interface Props {
 
 export default function ChatLayout({ id, children, history = [] }: Props) {
   const [messageCount, setMessageCount] = useState(history.length)
+  const [_, startTransition] = useTransition()
   const [bottom, setBottom] = useState(true)
   const [model] = useAtom(initialModel)
 
@@ -126,7 +135,11 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
         <div
           className='scrollbar overflow-scroll pt-8 relative'
           id='messages'
-          onScroll={() => setBottom(isBottom())}
+          onScroll={() => {
+            startTransition(() => {
+              setBottom(isBottom())
+            })
+          }}
         >
           {messages.map(({ id, content, role }, i) => {
             const isChatGPT = role === 'assistant'
