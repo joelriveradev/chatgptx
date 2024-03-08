@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json } from '@remix-run/node'
+import { json, type ActionFunctionArgs } from '@vercel/remix'
 import { openai } from '~/lib/openai.server'
 
 export const config = { runtime: 'edge' }
