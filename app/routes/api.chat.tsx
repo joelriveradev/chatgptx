@@ -2,6 +2,8 @@ import { ActionFunctionArgs, json } from '@remix-run/node'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { openai } from '~/lib/openai.server'
 
+export const config = { runtime: 'edge' }
+
 export const action = async ({ request }: ActionFunctionArgs) => {
   if (request.method !== 'POST') {
     return json({ message: 'Method not allowed' }, 405)
