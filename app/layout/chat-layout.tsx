@@ -143,7 +143,7 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
         >
           {messages.map(({ id, content, role }, i) => {
             const isChatGPT = role === 'assistant'
-            const isStreaming = isLoading && i === messages.length - 1
+            const isStreaming = isChatGPT && isLoading && i === messages.length - 1
 
             return (
               <div key={id} className='mb-8'>
