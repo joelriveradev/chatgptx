@@ -10,7 +10,7 @@ import type { Chat, Messages } from '~/types'
 //since it's synchronous and can't handle large amounts of data
 //for something like chatGPT.
 
-const DB_NAME = 'cchat'
+const DB_NAME = 'chatgpt-clone'
 const DB_VERSION = 1
 const STORE_NAME = 'chats'
 
