@@ -16,7 +16,7 @@ import { cn, generateUniqueId, isElementAtBottom } from '~/utils'
 import { Form, useNavigate } from '@remix-run/react'
 import { useAtom } from 'jotai'
 import { ArrowDown } from 'lucide-react'
-import { Input } from '~/components/ui/input'
+import { Textarea } from '~/components/ui/textarea'
 import { Button } from '~/components/ui/button'
 import { Show } from '~/components/custom/show'
 import { ChatSuggestions } from '~/components/custom/chat-suggestions'
@@ -56,7 +56,9 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
     const anchorEl = document.getElementById('anchor')
 
     if (anchorEl) {
-      anchorEl.scrollIntoView({ behavior: 'smooth' })
+      anchorEl.scrollIntoView({
+        behavior: 'smooth'
+      })
     }
   }, [])
 
@@ -199,12 +201,13 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
             </Show>
           </div>
 
-          <Input
+          <Textarea
             type='text'
             placeholder='Message ChatGPT...'
             name='message'
             onChange={handleInputChange}
             value={input}
+            className='resize-none'
           />
 
           <p className='text-center text-xs text-white/50 mt-3 mb-1'>
