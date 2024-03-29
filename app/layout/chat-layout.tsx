@@ -126,7 +126,7 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
 
   return (
     <main
-      className={cn('container h-[calc(100vh-57px)] mx-auto max-w-2xl pb-3', {
+      className={cn('container h-[calc(100dvh-57px)] mx-auto max-w-2xl pb-3', {
         'pt-44': messages.length === 0,
         'pt-0': messages.length > 0
       })}

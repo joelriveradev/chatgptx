@@ -51,7 +51,7 @@ export default function App() {
       <body className='dark'>
         <Provider>
           <div className='flex items-center'>
-            <aside className='w-[260px] h-screen hidden md:flex md:flex-col bg-black/80 border-r border-white/15'>
+            <aside className='w-[260px] h-dvh hidden md:flex md:flex-col bg-black/80 border-r border-white/15'>
               <SidebarHeader />
               <ChatHistory history={chatHistory} />
             </aside>
