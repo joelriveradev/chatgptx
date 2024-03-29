@@ -1,6 +1,5 @@
 import OpenAI from 'openai'
 
 export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  fetch: globalThis.fetch
+  apiKey: process.env.OPENAI_API_KEY
 })
