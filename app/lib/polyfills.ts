@@ -5,7 +5,11 @@ import { StreamingTextResponse as _StreamingTextResponse } from 'ai'
 // Therefore we use a custom one.
 export class StreamingTextResponse extends _StreamingTextResponse {
   constructor(res: ReadableStream, init?: ResponseInit) {
-    super(res, init)
+    const headers: HeadersInit = {
+      'Content-Type': 'text/plain; charset=utf-8',
+      ...init?.headers
+    }
+    super(res, { ...init, status: 200, headers })
     this.getRequestHeaders()
   }
 
