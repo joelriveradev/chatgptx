@@ -23,6 +23,7 @@ import { ChatSuggestions } from '~/components/custom/chat-suggestions'
 import { storeMessages, updateChatTitle } from '~/lib/indexedDB'
 import { Messages } from '~/types'
 import { initialModel } from '~/store'
+import { Element, scroller } from 'react-scroll'
 
 interface State {
   messages: Message[]
@@ -53,13 +54,11 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
   )
 
   const scrollToBottom = useCallback(() => {
-    const anchorEl = document.getElementById('anchor')
-
-    if (anchorEl) {
-      anchorEl.scrollIntoView({
-        behavior: 'smooth'
-      })
-    }
+    scroller.scrollTo('anchor', {
+      smooth: 'easeOutQuint',
+      containerId: 'messages',
+      isDyanmic: true
+    })
   }, [])
 
   const isBottom = useCallback(() => {
@@ -181,7 +180,8 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
               </div>
             )
           })}
-          <div id='anchor' />
+
+          <Element name='anchor' />
         </div>
 
         <Show when={messages.length > 0 && !bottom && !isLoading}>
