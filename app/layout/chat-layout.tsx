@@ -202,7 +202,6 @@ export default function ChatLayout({ id, children, history = [] }: Props) {
           </div>
 
           <Textarea
-            type='text'
             placeholder='Message ChatGPT...'
             name='message'
             onChange={handleInputChange}
