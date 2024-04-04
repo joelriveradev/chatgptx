@@ -80,7 +80,7 @@ export const getChats = (): Promise<Chat[]> => {
 }
 
 export const getChat = async (id: string): Promise<Chat> => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     const db = await openDB()
 
     if (db) {
